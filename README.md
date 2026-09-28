@@ -59,4 +59,4 @@ Once the application has been configured and Apache and MySQL are running, open 
 - The application does not display the complete list of stored colors at once, which can make it difficult to keep track of all existing colors.
 
 ### AI Usage
--There was no AI usage for this assignment.
+- There was no AI usage for this assignment.
