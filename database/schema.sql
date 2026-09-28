@@ -1,0 +1,28 @@
+-- COLORS Lab Database Schema
+-- MySQL 8.0
+
+CREATE DATABASE IF NOT EXISTS COP4331;
+USE COP4331;
+
+DROP TABLE IF EXISTS `Colors`;
+
+CREATE TABLE `Colors` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(50) NOT NULL DEFAULT '',
+  `UserID` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+
+DROP TABLE IF EXISTS `Users`;
+
+CREATE TABLE `Users` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `FirstName` varchar(50) NOT NULL DEFAULT '',
+  `LastName` varchar(50) NOT NULL DEFAULT '',
+  `Login` varchar(50) NOT NULL DEFAULT '',
+  `Password` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
