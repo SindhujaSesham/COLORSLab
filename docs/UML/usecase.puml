@@ -1,0 +1,13 @@
+@startuml
+left to right direction
+
+:User: as user
+:Authenticated User: as authUser
+
+user <|-- authUser
+
+user --> (Log In)
+authUser --> (Search color)
+authUser --> (Add color)
+
+@enduml
