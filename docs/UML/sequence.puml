@@ -1,0 +1,21 @@
+@startuml
+User -> Website: Log In
+Website -> Backend: Authenticatate Log In
+Backend -> Database: Check Database
+Database --> Backend: Found Log in
+Backend -> Website: Authenticatated Request
+Website -> User: Given Access
+
+User -> Website: Add Color
+Website -> Backend: Send Color Info
+Backend -> Database: Add to Database
+Database --> Backend: Confirm Color is added
+Backend -> Website: Color  added
+
+User -> Website: Search Color (partial)
+Website -> Backend: Send color name
+Backend -> Database: Check Database
+Database --> Backend: Confirm Color is present
+Backend -> Website: Color found
+Website -> User: Color Found
+@enduml
