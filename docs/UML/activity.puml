@@ -1,0 +1,16 @@
+@startuml
+start
+
+if (Logged In?) then (no)
+  :Log in;
+endif
+
+:Select Action;
+split
+  :Search Colors;
+split again
+  :Add Color;
+end split
+
+stop
+@enduml
