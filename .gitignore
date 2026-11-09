@@ -6,3 +6,29 @@ composer.phar
 # composer.lock
 
 .env
+
+
+# Node.js dependencies
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local logs
+*.log
+npm-debug.log*
+
+# Linting output
+eslint-report.*
+stylelint-report.*
+htmlhint-report.*
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+
+# PHP Composer dependencies (if using Composer)
+vendor/
