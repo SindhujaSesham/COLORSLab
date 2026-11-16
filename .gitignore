@@ -5,16 +5,9 @@ composer.phar
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
 # composer.lock
 
-.env
-
-
-# Node.js dependencies
+API/.env
+API/vendor/
 node_modules/
-
-# Environment variables and secrets
-.env
-.env.*
-!.env.example
 
 # Local logs
 *.log

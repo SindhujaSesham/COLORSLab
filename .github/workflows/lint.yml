@@ -1,5 +1,4 @@
-
-name: HTML CSS JavaScript Linting
+name: COLORS Linting and Testing
 
 on:
   push:
@@ -9,22 +8,40 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
 
+    # Temporary MySQL database for integration testing
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: testpassword
+          MYSQL_DATABASE: COP4331
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -ptestpassword"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
     steps:
+      # Download repository code
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Set up Node.js for linting and Jest
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: "22"
+          cache: "npm"
 
-      - name: Install dependencies
+      - name: Install Node dependencies
         run: npm ci
 
+      # Keep existing Assignment 4 linting checks
       - name: Lint HTML
         run: npm run lint:html
 
@@ -33,3 +50,45 @@ jobs:
 
       - name: Lint JavaScript
         run: npm run lint:js
+
+      # Install PHP for the backend integration test
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli
+          tools: composer
+
+      # Install the dotenv dependency
+      - name: Install PHP dependencies
+        run: composer install --working-dir=API --no-interaction
+
+      # Import the existing database schema
+      - name: Set up test database
+        run: |
+          mysql -h 127.0.0.1 -u root -ptestpassword < database/schema.sql
+
+      # Create temporary database credentials
+      - name: Configure PHP environment
+        run: |
+          echo "DB_HOST=127.0.0.1" > API/.env
+          echo "DB_USER=root" >> API/.env
+          echo "DB_PASS=testpassword" >> API/.env
+          echo "DB_NAME=COP4331" >> API/.env
+
+      # Start PHP backend
+      - name: Start PHP server
+        run: |
+          php -S 127.0.0.1:8000 -t API > /tmp/php-server.log 2>&1 &
+          for i in {1..20}; do
+            if curl -s http://127.0.0.1:8000/ >/dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/php-server.log
+          exit 1
+
+      # Run frontend unit and backend integration tests
+      - name: Run Jest tests
+        run: npm test
